@@ -33,12 +33,12 @@ export default class AppContainer extends Component {
       //initialRouteStack={routes}
       renderScene={(route, navigator) => {
         if (route.name === 'Main') return <Main navigator={navigator} />
-        if (route.name === 'Fridge') return <Fridge navigator={navigator} {...route.passProps} />
+        if (route.name === 'Fridge') return <Fridge navigator={navigator} />
         if (route.name === 'Recipes') return <Recipes navigator={navigator} />
         if (route.name === 'Freezer') return <Freezer navigator={navigator} />
-        if (route.name === 'Shopping List') return <ShoppingList navigator={navigator} {...route.passProps} />
-        if (route.name === 'Food') return <Food navigator={navigator} {...route.passProps} />
-        if (route.name === 'ConfirmDelete') return <ConfirmDelete navigator={navigator} {...route.passProps} />
+        if (route.name === 'Shopping List') return <ShoppingList navigator={navigator} />
+        if (route.name === 'Food') return <Food navigator={navigator} />
+        if (route.name === 'ConfirmDelete') return <ConfirmDelete navigator={navigator} />
       }}
       style={{paddingTop: 64}}
       navigationBar={

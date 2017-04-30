@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-  Text
+  WebView
 } from 'react-native'
 
 import styles from '../styles'
@@ -13,7 +13,7 @@ export default class Freezer extends Component {
 
   render() {
     return (
-      <Text>Freezer</Text>
+      <WebView source={{uri: 'https://www.google.com/maps/d/viewer?mid=1oMdEEzEuacc9pbwDTJTBbDiaQHI&usp=sharing'}} />
     )
   }
 }

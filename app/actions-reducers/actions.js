@@ -4,3 +4,11 @@ export const addFoods = (foods) => {
     payload: foods
   }
 }
+
+export const setFood = (food, date) => {
+  return {
+    type: 'SET_FOOD',
+    food: food,
+    date: date
+  }
+}

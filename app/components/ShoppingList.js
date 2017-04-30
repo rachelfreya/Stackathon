@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   Text,
   View,
@@ -6,7 +6,7 @@ import {
   Button,
   AlertIOS
 } from 'react-native';
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 
 import { addFoods } from '../actions-reducers/actions'
 import styles from '../styles'
@@ -21,8 +21,9 @@ class ShoppingList extends Component {
     this.props.navigator.push({ name: 'Fridge' })
   }
   buy(food, quantity) {
+    const today = new Date()
     this.setState({
-      bought: [...this.state.bought, {name: food, quantity: quantity, date: 'today'}],
+      bought: [...this.state.bought, {name: food, quantity: quantity, expires: today}],
       list: this.state.list.filter(item => item !== food),
     })
   }
