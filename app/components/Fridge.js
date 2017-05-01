@@ -5,14 +5,16 @@ import {
   View,
   TextInput,
   TouchableHighlight,
-  Image,
   DatePickerIOS,
-  AlertIOS
+  AlertIOS,
+  Picker,
+  Switch,
+  ScrollView
 } from 'react-native'
 import { connect } from 'react-redux'
 
 import styles from '../styles'
-import { addFoods, setFood } from '../actions-reducers/actions'
+import { addFoods, setFood, removeFood } from '../actions-reducers/actions'
 
 class Fridge extends Component {
   constructor(props){
@@ -21,7 +23,11 @@ class Fridge extends Component {
     quantity: null,
     selectedDate: new Date(),
     expires: new Date(),
-    dateAdded: new Date()
+    dateAdded: new Date(),
+    selected: 'default',
+    switch: false,
+    ingredients: [],
+    recipes: []
     }
     this.onDateChange = this.onDateChange.bind(this)
   }
@@ -42,6 +48,20 @@ class Fridge extends Component {
     this.refs['textInput1'].setNativeProps({text: ''})
     this.refs['textInput2'].setNativeProps({text: ''})
   }
+  selectAction(food){
+    switch (this.state.selected) {
+      case 'delete':
+        this.confirmTrash(food.name, this.state.dateAdded)
+        break
+      case 'eat':
+        this.props.removeFood(food.name)
+        break
+      case 'edible':
+        this.toFood(food.name, this.state.dateAdded)
+        break
+      case 'freezer':
+    }
+  }
   confirmTrash(foodName, dateAdded) {
     this.props.setFood(foodName, dateAdded)
     this.props.navigator.push({
@@ -49,23 +69,62 @@ class Fridge extends Component {
     })
   }
   onDateChange (date){
-    this.setState({selectedDate: date});
+    this.setState({selectedDate: date})
+  }
+  convert (ingredient){
+    switch (ingredient){
+      case 'Bacon':
+        return 'bacon+slices'
+      case 'Cheddar':
+        return 'extra+sharp+cheddar+cheese'
+    }
+  }
+  recipeSelect(value, food){
+    this.setState({switch: value, ingredients: this.state.ingredients.concat([food.name])})
+  }
+  searchRecipes(){
+    const path = this.state.ingredients.reduce((path, ingredient) => {
+      return path + `allowedIngredient[]=${this.convert(ingredient)}&`
+    },'https://api.yummly.com/v1/api/recipes?_app_id=657a2fca&_app_key=ad27f965b5aa72459d8b2207e5403e87&').slice(0, -1)
+    fetch(path, {method: "GET"})
+    .then((response) => response.json())
+      .then((responseData) => {
+        this.setState({recipes: responseData.matches})
+        })
+      .then(() => this.props.navigator.push({
+      name: 'Recipe',
+      passProps: {
+        recipes: this.state.recipes
+      }
+      })
+    )
   }
   render() {
     return (
-      <View style={styles.pageBackground}>
+      <ScrollView style={styles.pageBackground}>
         <Text style={styles.pageTitle}>Fridge</Text>
           {this.props.foods.map((food, i) => (
-            <View style={styles.foodView} key={i}>
-              <Text>{food.name}, Quantity: {food.quantity}, Use By: {food.expires.toLocaleDateString()}*</Text>
-            <TouchableHighlight onPress={() => this.confirmTrash(food.name, this.state.dateAdded)}>
-              <Image style={{height: 50, width: 50}} source={{uri: 'https://cdn1.iconfinder.com/data/icons/hawcons/32/699013-icon-27-trash-can-128.png'}} />
-            </TouchableHighlight>
-            <Button title='Can I Eat This?' onPress={() => this.toFood(food.name, this.state.dateAdded)} />
+            <View key={i}>
+              <Text style={styles.food}>{food.name}, Quantity: {food.quantity}, Use By: {food.expires.toLocaleDateString()}*</Text>
+              <Text style={{marginBottom: 10}}>Include in Recipe Search?
+              <Switch onValueChange={(value) => this.recipeSelect(value, food)} value={this.state.switch} />
+              </Text>
+              <Text>Select Action:</Text>
+              <Picker style={{height: 150}} selectedValue={this.state.selected} onValueChange={(action) => this.setState({selected: action})}>
+                <Picker.Item label="" value="default" />
+                <Picker.Item label="Eat" value="eat" />
+                <Picker.Item label="Throw Away" value="delete" />
+                <Picker.Item label="Move to Freezer" value="freezer" />
+                <Picker.Item label="Edible?" value="edible" />
+              </Picker>
+              <Button title='Submit' onPress={() => this.selectAction(food)} />
             </View>
             ))
           }
-        <Text>Add Item</Text>
+          {this.state.ingredients.map((ingredient, i) => (
+            <Button key={i} style={{marginBottom: 20}} title='Search for Recipes' onPress={() => this.searchRecipes()} />
+          ))}
+        <Text style={styles.pageLabel}>Add Item</Text>
           <TextInput
             placeholder='Type of Food'
             ref='textInput1'
@@ -84,10 +143,10 @@ class Fridge extends Component {
           onDateChange={this.onDateChange}
           />
           <Button title='Add to Fridge' onPress={() => this.addToFridge()} />
-      </View>
+      </ScrollView>
     )
   }
 }
 
 const mapState = ({ foods, foodChart }) => ({ foods, foodChart })
-export default connect(mapState, { addFoods, setFood })(Fridge)
+export default connect(mapState, { addFoods, setFood, removeFood })(Fridge)

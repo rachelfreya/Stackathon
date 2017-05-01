@@ -16,12 +16,14 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   pageBackground: {
-    backgroundColor: 'powderblue',
-    flex: 1
+    backgroundColor: 'powderblue'
   },
   pageLabel: {
     fontSize: 18,
     textAlign: 'center'
+  },
+  food: {
+    fontSize: 18
   },
   input: {
     height: 25,
@@ -39,6 +41,10 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300
   },
+  recipeImg: {
+    width: 100,
+    height: 75
+  },
   foodView: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -46,13 +52,6 @@ const styles = StyleSheet.create({
   },
   addtoList: {
     marginTop: 125
-  },
-  map: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
   }
 })
 

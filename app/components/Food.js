@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   Text,
   View,
@@ -15,10 +15,9 @@ class Food extends Component {
     maxExpire = new Date()
     maxExpire.setDate(dateAdded + this.props.foodChart[this.props.currentFood.name].max)
     return (
-      <View style={styles.foodView}>
+      <View>
         <Text style={styles.pageTitle}>{this.props.currentFood.name}</Text>
-        <Image style={styles.foodImg} source={{uri: this.props.foodChart[this.props.currentFood.name].url}} />
-        <Text style={{padding: 25}}>If the product is moldy, {moldy}. This product could still be good until {maxExpire.toLocaleDateString()} in the fridge, but the best way to test is to smell it.</Text>
+        <Text>If the product is moldy, {moldy}. This product could still be good until {maxExpire.toLocaleDateString()} in the fridge, but the best way to test is to smell it.</Text>
       </View>
     );
   }

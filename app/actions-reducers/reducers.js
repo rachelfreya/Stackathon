@@ -3,7 +3,19 @@ import { combineReducers } from 'redux'
 const foodsReducer = (state = [], action) => {
   switch (action.type) {
     case 'ADD_FOODS':
-      return state.concat(action.payload)
+      return state.concat(action.foods)
+    case 'REMOVE_FOOD':
+      return state.filter(food => food.name !== action.food)
+    default: return state
+  }
+}
+
+const recipesReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'ADD_RECIPE':
+      return state.concat(action.recipe)
+    case 'DELETE_RECIPE':
+      return state.filter(recipe => recipe.id !== action.id)
     default: return state
   }
 }
@@ -33,7 +45,8 @@ const chartReducer = (state = {}, action) => {
 const rootReducer = combineReducers({
   foods: foodsReducer,
   currentFood: foodReducer,
-  foodChart: chartReducer
+  foodChart: chartReducer,
+  recipes: recipesReducer
 })
 
 export default rootReducer

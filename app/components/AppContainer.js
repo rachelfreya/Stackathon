@@ -11,6 +11,8 @@ import Food from './Food'
 import Freezer from './Freezer'
 import Fridge from './Fridge'
 import Recipes from './Recipes'
+import Recipe from './Recipe'
+import FullRecipe from './FullRecipe'
 import ShoppingList from './ShoppingList'
 import ConfirmDelete from './ConfirmDelete'
 import styles from '../styles'
@@ -39,6 +41,8 @@ export default class AppContainer extends Component {
         if (route.name === 'Shopping List') return <ShoppingList navigator={navigator} />
         if (route.name === 'Food') return <Food navigator={navigator} />
         if (route.name === 'ConfirmDelete') return <ConfirmDelete navigator={navigator} />
+        if (route.name === 'Recipe') return <Recipe navigator={navigator} {...route.passProps} />
+        if (route.name === 'FullRecipe') return <FullRecipe navigator={navigator} {...route.passProps} />
       }}
       style={{paddingTop: 64}}
       navigationBar={
