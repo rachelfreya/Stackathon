@@ -9,8 +9,8 @@ import {
 import styles from '../styles'
 
 export default class Main extends Component {
-  toFridge(){
-    this.props.navigator.push({ name: 'Fridge' })
+  toKitchen(){
+    this.props.navigator.push({ name: 'Kitchen' })
   }
   toRecipes(){
     this.props.navigator.push({ name: 'Recipes' })
@@ -18,27 +18,32 @@ export default class Main extends Component {
   toList(){
     this.props.navigator.push({ name: 'Shopping List' })
   }
+  toRankings(){
+    this.props.navigator.push({ name: 'Rankings' })
+  }
 
   render() {
     return (
       <View style={{flex: 1, flexDirection: 'column'}}>
+        <View style={[styles.tileViews, {backgroundColor: 'cyan'}]}>
+          <Text style={{textAlign: 'center', fontSize: 14, marginBottom: 20}}>You have saved 5 pounds of food waste and $25 so far this year!</Text>
+          <TouchableHighlight onPress={() => this.toRankings()}>
+            <Text style={{textAlign: 'center', fontSize: 14}}>See where you rank</Text>
+          </TouchableHighlight>
+        </View>
         <View style={[styles.tileViews, {backgroundColor: 'powderblue'}]}>
-          <Text style={styles.tileTitle}>Fridge</Text>
-          <TouchableHighlight onPress={() => this.toFridge()}>
-            <Image source={{uri: 'https://www.clipartkid.com/images/261/refrigerator-clipart-vector-clip-art-online-royalty-free-design-ef1Zue-clipart.png'}}
-       style={{width: 100, height: 160}} />
+          <TouchableHighlight onPress={() => this.toKitchen()}>
+            <Text style={styles.tileTitle}>My Kitchen</Text>
           </TouchableHighlight>
         </View>
         <View style={[styles.tileViews, {backgroundColor: 'steelblue'}]}>
-          <Text style={styles.tileTitle}>Shopping List</Text>
           <TouchableHighlight onPress={() => this.toList()}>
-            <Image source={{uri: 'https://img.clipartfest.com/e2d5c5155d5aeb41868df42bae742547_all-the-imagesgraphics-arts-shopping-list-clip-art_236-333.jpeg'}} style={{height: 150, width: 100}} />
+            <Text style={styles.tileTitle}>My Shopping List</Text>
           </TouchableHighlight>
         </View>
         <View style={[styles.tileViews, {backgroundColor: 'skyblue'}]}>
-          <Text style={styles.tileTitle}>Recipes</Text>
           <TouchableHighlight onPress={() => this.toRecipes()}>
-            <Image source={{uri: 'https://img.clipartall.com/free-recipe-sheet-clip-art-recipe-clip-art-800_683.png'}} style={{height: 120, width: 150}} />
+            <Text style={styles.tileTitle}>My Recipes</Text>
           </TouchableHighlight>
         </View>
       </View>

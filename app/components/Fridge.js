@@ -25,7 +25,6 @@ class Fridge extends Component {
     expires: new Date(),
     dateAdded: new Date(),
     selected: 'default',
-    switch: false,
     ingredients: [],
     recipes: []
     }
@@ -79,8 +78,13 @@ class Fridge extends Component {
         return 'extra+sharp+cheddar+cheese'
     }
   }
-  recipeSelect(value, food){
-    this.setState({switch: value, ingredients: this.state.ingredients.concat([food.name])})
+  recipeSelect(food){
+    if (this.state.ingredients.includes(food.name)){
+      this.setState({ ingredients: this.state.ingredients.filter(ingredient => ingredient !== food.name) })
+    }
+    else {
+      this.setState({ ingredients: this.state.ingredients.concat([food.name]) })
+    }
   }
   searchRecipes(){
     const path = this.state.ingredients.reduce((path, ingredient) => {
@@ -103,46 +107,53 @@ class Fridge extends Component {
     return (
       <ScrollView style={styles.pageBackground}>
         <Text style={styles.pageTitle}>Fridge</Text>
+          {this.state.ingredients.filter((ingredient, i) => i === 0).map((ingredient, i) => (
+            <Button key={i} style={{marginBottom: 40}} title='Search for Recipes' onPress={() => this.searchRecipes()} />
+          ))}
           {this.props.foods.map((food, i) => (
             <View key={i}>
-              <Text style={styles.food}>{food.name}, Quantity: {food.quantity}, Use By: {food.expires.toLocaleDateString()}*</Text>
-              <Text style={{marginBottom: 10}}>Include in Recipe Search?
-              <Switch onValueChange={(value) => this.recipeSelect(value, food)} value={this.state.switch} />
-              </Text>
+              <TouchableHighlight onPress={() => this.recipeSelect(food)}>
+                <Text style={this.state.ingredients.includes(food.name) ? styles.foodSelected : styles.food}>{food.name}, Quantity: {food.quantity}, Use By: {food.expires.toLocaleDateString()}*</Text>
+              </TouchableHighlight>
               <Text>Select Action:</Text>
-              <Picker style={{height: 150}} selectedValue={this.state.selected} onValueChange={(action) => this.setState({selected: action})}>
-                <Picker.Item label="" value="default" />
-                <Picker.Item label="Eat" value="eat" />
-                <Picker.Item label="Throw Away" value="delete" />
-                <Picker.Item label="Move to Freezer" value="freezer" />
-                <Picker.Item label="Edible?" value="edible" />
-              </Picker>
-              <Button title='Submit' onPress={() => this.selectAction(food)} />
+              <View style={styles.actionView}>
+                <Picker style={{height: 150, width: 100}} selectedValue={this.state.selected} onValueChange={(action) => this.setState({selected: action})}>
+                  <Picker.Item label="" value="default" />
+                  <Picker.Item label="Eat" value="eat" />
+                  <Picker.Item label="Throw Away" value="delete" />
+                  <Picker.Item label="Move to Freezer" value="freezer" />
+                  <Picker.Item label="Edible?" value="edible" />
+                </Picker>
+              </View>
+              <View style={{flex: 1}}>
+              <Button style={{marginBottom: 20}} title='Submit' onPress={() => this.selectAction(food)} />
+              </View>
             </View>
             ))
           }
-          {this.state.ingredients.map((ingredient, i) => (
-            <Button key={i} style={{marginBottom: 20}} title='Search for Recipes' onPress={() => this.searchRecipes()} />
-          ))}
+          <View style={{flex: 1}}>
         <Text style={styles.pageLabel}>Add Item</Text>
+          <View style={{flex: 1, flexDirection: 'row'}}>
           <TextInput
             placeholder='Type of Food'
             ref='textInput1'
-            style={styles.input}
+            style={styles.addFoodInput}
             onChangeText={(food) => this.setState({ food })}
           />
           <TextInput
             placeholder='Quantity'
             ref='textInput2'
-            style={styles.input}
+            style={styles.addFoodInput}
             onChangeText={(quantity) => this.setState({ quantity })}
           />
+          </View>
           <DatePickerIOS
           date={this.state.selectedDate}
           mode="date"
           onDateChange={this.onDateChange}
           />
           <Button title='Add to Fridge' onPress={() => this.addToFridge()} />
+          </View>
       </ScrollView>
     )
   }

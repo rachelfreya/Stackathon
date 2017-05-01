@@ -7,14 +7,22 @@ import {
 } from 'react-native'
 
 import Main from './Main'
-import Food from './Food'
-import Freezer from './Freezer'
-import Fridge from './Fridge'
+
+import Rankings from './Rankings'
+import Kitchen from './Kitchen'
+import ShoppingList from './ShoppingList'
 import Recipes from './Recipes'
+
+import All from './All'
+import Fridge from './Fridge'
+import Freezer from './Freezer'
+import Pantry from './Pantry'
+
+import Food from './Food'
 import Recipe from './Recipe'
 import FullRecipe from './FullRecipe'
-import ShoppingList from './ShoppingList'
 import ConfirmDelete from './ConfirmDelete'
+
 import styles from '../styles'
 
 export default class AppContainer extends Component {
@@ -43,6 +51,10 @@ export default class AppContainer extends Component {
         if (route.name === 'ConfirmDelete') return <ConfirmDelete navigator={navigator} />
         if (route.name === 'Recipe') return <Recipe navigator={navigator} {...route.passProps} />
         if (route.name === 'FullRecipe') return <FullRecipe navigator={navigator} {...route.passProps} />
+        if (route.name === 'Kitchen') return <Kitchen navigator={navigator} />
+        if (route.name === 'Pantry') return <Pantry navigator={navigator} />
+        if (route.name === 'Rankings') return <Rankings navigator={navigator} />
+        if (route.name === 'All') return <All navigator={navigator} />
       }}
       style={{paddingTop: 64}}
       navigationBar={

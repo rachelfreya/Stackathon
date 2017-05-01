@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   pageBackground: {
-    backgroundColor: 'powderblue'
+    backgroundColor: 'powderblue',
+    flex: 1
   },
   pageLabel: {
     fontSize: 18,
@@ -25,12 +26,15 @@ const styles = StyleSheet.create({
   food: {
     fontSize: 18
   },
+  foodSelected: {
+    fontSize: 18,
+    backgroundColor: 'yellow'
+  },
   input: {
     height: 25,
-    width: 150,
+    width: 100,
     backgroundColor: 'white',
-    marginLeft: 115,
-    marginRight: 50
+    marginLeft: 135
   },
   tileViews: {
     flex: 1,
@@ -47,12 +51,21 @@ const styles = StyleSheet.create({
   },
   foodView: {
     justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row'
+    alignItems: 'center'
   },
   addtoList: {
     marginTop: 125
-  }
+  },
+  addFoodInput: {
+    width: 110,
+    height: 25,
+    backgroundColor: 'white',
+    marginLeft: 50
+  },
+  actionView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1  }
 })
 
 export default styles
