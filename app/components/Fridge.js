@@ -8,7 +8,6 @@ import {
   DatePickerIOS,
   AlertIOS,
   Picker,
-  Switch,
   ScrollView
 } from 'react-native'
 import { connect } from 'react-redux'
@@ -22,8 +21,8 @@ class Fridge extends Component {
     this.state = { food: '',
     quantity: null,
     selectedDate: new Date(),
-    expires: new Date(),
     dateAdded: new Date(),
+    expires: new Date(),
     selected: 'default',
     ingredients: [],
     recipes: []
@@ -36,12 +35,15 @@ class Fridge extends Component {
       name: 'Food'
     })
   }
-  addToFridge() {
+  addToKitchen() {
     const date = this.state.selectedDate.getDate(),
-    today = new Date()
-    this.state.expires.setDate(date + this.props.foodChart[this.state.food].min)
-    this.setState({ dateAdded: this.state.selectedDate, selectedDate: new Date() })
-    this.props.addFoods([{name: this.state.food, quantity: this.state.quantity, expires: this.state.expires, dateAdded: this.state.dateAdded}])
+    today = new Date(),
+    expires = this.state.expires
+    if (this.state.selectedDate.getDate()>1) expires.setMonth(3)
+    expires.setDate(date + this.props.foodChart[this.state.food].min)
+    this.setState({ dateAdded: this.state.selectedDate, selectedDate: new Date(), expires: expires })
+    this.props.addFoods([{name: this.state.food, quantity: this.state.quantity, expires: this.state.expires, dateAdded: this.state.dateAdded, location: this.props.currentView }])
+    this.setState({ expires: new Date() })
     if (this.state.expires <= today) AlertIOS.alert(`The ${this.state.food.toLowerCase
       ()} in your fridge is about to expire.`, 'You should try to use it in the next couple of days.')
     this.refs['textInput1'].setNativeProps({text: ''})
@@ -58,7 +60,6 @@ class Fridge extends Component {
       case 'edible':
         this.toFood(food.name, this.state.dateAdded)
         break
-      case 'freezer':
     }
   }
   confirmTrash(foodName, dateAdded) {
@@ -76,6 +77,16 @@ class Fridge extends Component {
         return 'bacon+slices'
       case 'Cheddar':
         return 'extra+sharp+cheddar+cheese'
+      case 'Apple':
+        return 'apples'
+      case 'Eggs':
+        return 'eggs'
+      case 'Steak':
+        return 'steak'
+      case 'Chicken':
+        return 'boneless-skinless-chicken-breasts'
+      case 'Ground Beef':
+        return 'ground-beef'
     }
   }
   recipeSelect(food){
@@ -106,18 +117,18 @@ class Fridge extends Component {
   render() {
     return (
       <ScrollView style={styles.pageBackground}>
-        <Text style={styles.pageTitle}>Fridge</Text>
+        <Text style={styles.pageTitle}>{this.props.currentView}</Text>
           {this.state.ingredients.filter((ingredient, i) => i === 0).map((ingredient, i) => (
             <Button key={i} style={{marginBottom: 40}} title='Search for Recipes' onPress={() => this.searchRecipes()} />
           ))}
-          {this.props.foods.map((food, i) => (
+          {this.props.foods.filter(food => food.location === this.props.currentView).map((food, i) => (
             <View key={i}>
               <TouchableHighlight onPress={() => this.recipeSelect(food)}>
                 <Text style={this.state.ingredients.includes(food.name) ? styles.foodSelected : styles.food}>{food.name}, Quantity: {food.quantity}, Use By: {food.expires.toLocaleDateString()}*</Text>
               </TouchableHighlight>
               <Text>Select Action:</Text>
               <View style={styles.actionView}>
-                <Picker style={{height: 150, width: 100}} selectedValue={this.state.selected} onValueChange={(action) => this.setState({selected: action})}>
+                <Picker style={{height: 150, width: 150}} selectedValue={this.state.selected} onValueChange={(action) => this.setState({selected: action})}>
                   <Picker.Item label="" value="default" />
                   <Picker.Item label="Eat" value="eat" />
                   <Picker.Item label="Throw Away" value="delete" />
@@ -152,12 +163,12 @@ class Fridge extends Component {
           mode="date"
           onDateChange={this.onDateChange}
           />
-          <Button title='Add to Fridge' onPress={() => this.addToFridge()} />
+          <Button title={`Add to ${this.props.currentView}`} onPress={() => this.addToKitchen()} />
           </View>
       </ScrollView>
     )
   }
 }
 
-const mapState = ({ foods, foodChart }) => ({ foods, foodChart })
+const mapState = ({ foods, foodChart, currentView }) => ({ foods, foodChart, currentView })
 export default connect(mapState, { addFoods, setFood, removeFood })(Fridge)

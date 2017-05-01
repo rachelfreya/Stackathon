@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux'
 
-import { addFoods } from '../actions-reducers/actions'
+import { addFoods, setView } from '../actions-reducers/actions'
 import styles from '../styles'
 
 class ShoppingList extends Component {
@@ -17,13 +17,17 @@ class ShoppingList extends Component {
     this.state = { list: [], bought: [], quantity: null, food: '' }
   }
   toFridge(){
+    this.props.setView('Fridge')
     this.props.addFoods(this.state.bought)
     this.props.navigator.push({ name: 'Fridge' })
   }
   buy(food, quantity) {
-    const today = new Date()
+    const today = new Date(),
+    date = today.getDate(),
+    expires = new Date()
+    expires.setDate(date + this.props.foodChart[food].min)
     this.setState({
-      bought: [...this.state.bought, {name: food, quantity: quantity, expires: today}],
+      bought: [...this.state.bought, {name: food, quantity: quantity, location: 'Fridge', dateAdded: today, expires: expires}],
       list: this.state.list.filter(item => item !== food),
     })
   }
@@ -75,5 +79,5 @@ class ShoppingList extends Component {
   }
 }
 
-const mapState = ({ foods }) => ({ foods })
-export default connect(mapState, { addFoods })(ShoppingList)
+const mapState = ({ foods, foodChart }) => ({ foods, foodChart })
+export default connect(mapState, { addFoods, setView })(ShoppingList)

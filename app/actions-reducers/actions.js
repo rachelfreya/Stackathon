@@ -33,3 +33,10 @@ export const deleteRecipe = (id) => {
     id: id
   }
 }
+
+export const setView = (location) => {
+  return {
+    type: 'SET_VIEW',
+    location: location
+  }
+}

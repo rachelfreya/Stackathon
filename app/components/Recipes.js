@@ -34,7 +34,7 @@ class Recipes extends Component {
   {
     return (
       <View>
-      <Text>Recipes</Text>
+      <Text style={styles.pageTitle}>Recipes</Text>
       {this.props.recipes.map((recipe, i) => (
         <View key={i}>
           <Text>{recipe.recipeName}</Text>

@@ -12,12 +12,7 @@ import Rankings from './Rankings'
 import Kitchen from './Kitchen'
 import ShoppingList from './ShoppingList'
 import Recipes from './Recipes'
-
-import All from './All'
 import Fridge from './Fridge'
-import Freezer from './Freezer'
-import Pantry from './Pantry'
-
 import Food from './Food'
 import Recipe from './Recipe'
 import FullRecipe from './FullRecipe'

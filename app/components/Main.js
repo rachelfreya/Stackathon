@@ -25,7 +25,7 @@ export default class Main extends Component {
   render() {
     return (
       <View style={{flex: 1, flexDirection: 'column'}}>
-        <View style={[styles.tileViews, {backgroundColor: 'cyan'}]}>
+        <View style={[styles.tileViews, {backgroundColor: 'lightcyan'}]}>
           <Text style={{textAlign: 'center', fontSize: 14, marginBottom: 20}}>You have saved 5 pounds of food waste and $25 so far this year!</Text>
           <TouchableHighlight onPress={() => this.toRankings()}>
             <Text style={{textAlign: 'center', fontSize: 14}}>See where you rank</Text>

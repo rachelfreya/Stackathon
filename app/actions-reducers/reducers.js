@@ -28,6 +28,14 @@ const foodReducer = (state = {}, action) => {
   }
 }
 
+const viewReducer = (state = '', action) => {
+  switch (action.type) {
+    case 'SET_VIEW':
+      return action.location
+    default: return state
+  }
+}
+
 const chartReducer = (state = {}, action) => {
   return {
     Milk: {moldy: true, min: 7, max: 10, url: 'https://www.clipartkid.com/images/126/milk5-X15aEw-clipart.png'},
@@ -46,7 +54,8 @@ const rootReducer = combineReducers({
   foods: foodsReducer,
   currentFood: foodReducer,
   foodChart: chartReducer,
-  recipes: recipesReducer
+  recipes: recipesReducer,
+  currentView: viewReducer
 })
 
 export default rootReducer

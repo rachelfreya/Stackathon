@@ -15,7 +15,7 @@ class Food extends Component {
     maxExpire = new Date()
     maxExpire.setDate(dateAdded + this.props.foodChart[this.props.currentFood.name].max)
     return (
-      <View>
+      <View style={styles.pageBackground}>
         <Text style={styles.pageTitle}>{this.props.currentFood.name}</Text>
         <Text>If the product is moldy, {moldy}. This product could still be good until {maxExpire.toLocaleDateString()} in the fridge, but the best way to test is to smell it.</Text>
       </View>
